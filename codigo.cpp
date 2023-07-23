@@ -31,10 +31,19 @@ double aumentar_f(MACACO &macaco, PREDADOR &predador, double valor_de_f) {
 }
 using namespace std;
 int main() {
+
+
+
+    
     srand(time(NULL));
 
     string simbolos[10] = {"s1", "s2", "s3", "s4", "s5", "s6", "s7", "s8", "s9", "s10"};
     double pesos[10] = {0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
+
+
+
+
+
 
     // Gera pesos aleatórios para os símbolos.
     for (int i = 0; i < 10; i++) {
