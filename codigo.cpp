@@ -220,35 +220,10 @@ void interagirMacacos(MACACO &macaco, MACACO &macaco2) {
         cout << "O macaco1 percebe um alarme e um predador e o valor de f da dupla (símbolo, predador) aumenta para: " << macaco2.pesos[simbolo_float] << endl;
       }
     }
-  }
+  };
 
-  // Se o macaco2 percebe a presença de um predador, ele consulta a tabela e dispara o alarme de maior valor f
-  if (distancia(macaco2.x, macaco2.y, macaco.x, macaco.y) < macaco2.rp) {
-    int maior_peso = 0;
-    string maior_simbolo;
 
-    for (const auto &simbolo : macaco2.simbolos) {
-      int simbolo_int = std::stoi(simbolo);
-      if (macaco.pesos[simbolo_int] > maior_peso) {
-        maior_peso = macaco.pesos[simbolo_int];
-        maior_simbolo = simbolo;
-      }
-    }
-    cout << "O macaco2 percebe a presença de um predador e dispara o alarme de maior valor f: " << maior_peso << " " << maior_simbolo << endl;
-  }
-
-  // Se o macaco2 percebe um alarme e um predador, o valor de f da dupla (símbolo, predador) aumenta seguindo uma função recursiva, ex: f <− f+0,1
-  if (distancia(macaco2.x, macaco2.y, macaco.x, macaco.y) < macaco2.ra) {
-    for (const auto &simbolo : macaco2.simbolos) {
-      float simbolo_float = std::stof(simbolo);
-      if (macaco.pesos[simbolo_float] > 0) {
-        macaco.pesos[simbolo_float] += 0.1;
-        cout << "O macaco2 percebe um alarme e um predador e o valor de f da dupla (símbolo, predador) aumenta para: " << macaco.pesos[simbolo_float] << endl;
-      }
-    }
-  }
-}
-
+};
 
 void alarme_macaco(MACACO &macaco2){
 // Se o macaco2 percebe um predador x, ele se move para a copa da árvore
