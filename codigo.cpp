@@ -104,7 +104,7 @@ int main() {
 #include <iostream>
 #include <vector>
 #include <string>
-#include <operators>
+#include <math.h>
 
 
 const int m = 20;
@@ -177,7 +177,7 @@ void gerarSimbolosMacaco(MACACO macaco) {
     float pesos = rand() / (float)RAND_MAX;
     macaco.simbolos.push_back(simbolos);
     macaco.pesos.push_back(pesos);
-    cout << "Simbolos: ";
+    cout << "Simbolos:" ;
   for (auto simbolos : macaco.simbolos) {
     cout << simbolos << " ";
   }
@@ -192,38 +192,54 @@ void gerarSimbolosMacaco(MACACO macaco) {
   macaco.ra = rand() % 10;
 }
 
-float distancia(float x1, float x2, float y1, float y2) {
-  // Calcula a distância entre dois pontos
+float distancia(int x1, int y1, int x2, int y2) {
+    return sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1));
 }
 
 void interagirMacacos(MACACO macaco1, MACACO macaco2) {
   // Se o macaco1 percebe a presença de um predador, ele consulta a tabela e dispara o alarme de maior valor f
   if (distancia(macaco1.x, macaco1.y, macaco2.x, macaco2.y) < macaco1.rp) {
-    int maior_peso;
+    int maior_peso = 0;
     string maior_simbolo;
-    for (auto simbolo : macaco1.simbolos) {
-      if (macaco2.pesos.operator[simbolo] > maior_peso) {
-        maior_peso = macaco2.pesos.operator[simbolo];
+
+    for (const auto &simbolo : macaco1.simbolos) {
+      int simbolo_int = std::stoi(simbolo);
+      if (macaco2.pesos[simbolo_int] > maior_peso) {
+        maior_peso = macaco2.pesos[simbolo_int];
         maior_simbolo = simbolo;
       }
     }
-    macaco1.simbolos.push_back(maior_simbolo);
+    cout << "O macaco1 percebe a presença de um predador e dispara o alarme de maior valor f: " << maior_peso << " " << maior_simbolo << endl;
   }
 
   // Se o macaco1 percebe um alarme e um predador, o valor de f da dupla (símbolo, predador) aumenta seguindo uma função recursiva, ex: f <− f+0,1
   if (distancia(macaco1.x, macaco1.y, macaco2.x, macaco2.y) < macaco1.ra) {
-    for (auto simbolo : macaco1.simbolos) {
-      if (macaco2.pesos.operator[simbolo] > 0) {
-        macaco2.pesos.operator[simbolo] += 0.1;
+    for (const auto &simbolo : macaco1.simbolos) {
+      float simbolo_float = std::stof(simbolo);
+      if (macaco2.pesos[simbolo_float] > 0) {
+        macaco2.pesos[simbolo_float] += 0.1;
+        cout << "O macaco1 percebe um alarme e um predador e o valor de f da dupla (símbolo, predador) aumenta para: " << macaco2.pesos[simbolo_float] << endl;
       }
     }
   }
-}
+};
+
+
 
 int main(){
 
     MACACO macaco;
-  
+    MACACO macaco1;
+    macaco1.x = 0;
+    macaco1.y = 0;
+    macaco1.rp = 5;
+    macaco1.ra = 10;
+
+    MACACO macaco2;
+    macaco2.x = 10;
+    macaco2.y = 10;
+    macaco2.rp = 5;
+    macaco2.ra = 10;
 
     for (int i = 0; i < coluna; i++) {
       for (int j = 0; j < linha; j++) {
@@ -231,7 +247,7 @@ int main(){
      }
     }
 
-  for (int i = 0; i < p; i++) {
+   for (int i = 0; i < p; i++) {
     gerarPredador();
   }
 
@@ -250,8 +266,11 @@ int main(){
   
 
  gerarSimbolosMacaco(macaco);
+ interagirMacacos(macaco1,macaco2);
  return 0;
 
-}
+};
+
+
 
 
