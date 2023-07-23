@@ -83,3 +83,175 @@ int main() {
 */
 
 
+/** Alegoria (cenário)															
+	~ Os macacos vervets, tal como alguns de outras espécies, desenvolveram um meio eficiente para aumentar a proteção dos membros do grupo de seus predadores														
+	~ Estes animais usam alarmes para informar a presença de seus predadores, a águia, a cobra e o tigre, aos outros membros do grupo														
+	~ O alarme tem uma função adaptativa importante pois:														
+		/se um tigre se aproxima o comportamento de fuga é o de ir para os galhos mais finos (externos) da árvore													
+		/se uma águia se aproxima o comportamento de fuga é o de ir para a copa da árvore													
+		/se uma cobra se aproxima é preciso ficar atendo à relva e à folhagem													
+	~ Cada alarme leva a um comportamento de fuga que é eficiente para um tipo de predador, mas pode não ser para outro														
+	~ Todavia, os macacos não nascem com este processo sígnico compartilhado pelos outros														
+	~ Para que a linguagem traga vantagens adaptativas aos vervets, eles precisam compartilhar a dupla Sígno (alarme) - Predador*/
+
+/*for (int i = 0; i < 50; i++) {
+  for (int j = 0; j < 50; j++) {
+    // Faça algo com o elemento matrix[i][j]
+  }
+}*/
+
+
+#include <iostream>
+#include <vector>
+#include <string>
+#include <operators>
+
+
+const int m = 20;
+const int p = 5;
+const int coluna = 10;
+const int linha = 10;
+
+int MATRIZ_AMBIENTE[coluna][linha];
+
+using namespace std;
+
+struct PREDADOR {
+    int x, y;
+};
+struct MACACO {
+    int x, y;
+    vector<string> simbolos;
+    vector<float> pesos;
+    int rp, ra;
+};
+
+void gerarPredador() {
+  PREDADOR predador;
+  predador.x = rand() % coluna;
+  predador.y = rand() % linha;
+  MATRIZ_AMBIENTE[predador.x][predador.y] = 1;
+}
+
+void gerarMacaco() {
+  MACACO macaco;
+  macaco.x = rand() % coluna;
+  macaco.y = rand() % linha;
+  MATRIZ_AMBIENTE[macaco.x][macaco.y] = 2;
+}
+
+void moverMacaco() {
+  MACACO macaco;
+  int novaPosicaoX = rand() % coluna;
+  int novaPosicaoY = rand() % linha;
+  while (MATRIZ_AMBIENTE[novaPosicaoX][novaPosicaoY] != 0) {
+    novaPosicaoX = rand() % coluna;
+    novaPosicaoY = rand() % linha;
+  }
+  MATRIZ_AMBIENTE[macaco.x][macaco.y] = 0;
+  MATRIZ_AMBIENTE[novaPosicaoX][novaPosicaoY] = 2;
+  macaco.x = novaPosicaoX;
+  macaco.y = novaPosicaoY;
+}
+
+void moverPredador() { 
+  PREDADOR predador;
+  int novaPosicaoX = rand() % coluna;
+  int novaPosicaoY = rand() % linha;
+  while (MATRIZ_AMBIENTE[novaPosicaoX][novaPosicaoY] != 0) {
+    novaPosicaoX = rand() % coluna;
+    novaPosicaoY = rand() % linha;
+  }
+  MATRIZ_AMBIENTE[predador.x][predador.y] = 0;
+  MATRIZ_AMBIENTE[novaPosicaoX][novaPosicaoY] = 1;
+  predador.x = novaPosicaoX;
+  predador.y = novaPosicaoY;
+}
+
+
+void gerarSimbolosMacaco(MACACO macaco) {
+    macaco.x = rand() % coluna;
+    macaco.y = rand() % linha;
+    for (int i = 0; i < 10; i++) {
+    string simbolos = "simbolo " + to_string(i);
+    float pesos = rand() / (float)RAND_MAX;
+    macaco.simbolos.push_back(simbolos);
+    macaco.pesos.push_back(pesos);
+    cout << "Simbolos: ";
+  for (auto simbolos : macaco.simbolos) {
+    cout << simbolos << " ";
+  }
+  cout << endl;
+  cout << "Pesos: ";
+  for (auto pesos : macaco.pesos) {
+    cout << pesos << " ";
+  }
+  cout << endl;
+  }
+  macaco.rp = rand() % 10;
+  macaco.ra = rand() % 10;
+}
+
+float distancia(float x1, float x2, float y1, float y2) {
+  // Calcula a distância entre dois pontos
+}
+
+void interagirMacacos(MACACO macaco1, MACACO macaco2) {
+  // Se o macaco1 percebe a presença de um predador, ele consulta a tabela e dispara o alarme de maior valor f
+  if (distancia(macaco1.x, macaco1.y, macaco2.x, macaco2.y) < macaco1.rp) {
+    int maior_peso;
+    string maior_simbolo;
+    for (auto simbolo : macaco1.simbolos) {
+      if (macaco2.pesos.operator[simbolo] > maior_peso) {
+        maior_peso = macaco2.pesos.operator[simbolo];
+        maior_simbolo = simbolo;
+      }
+    }
+    macaco1.simbolos.push_back(maior_simbolo);
+  }
+
+  // Se o macaco1 percebe um alarme e um predador, o valor de f da dupla (símbolo, predador) aumenta seguindo uma função recursiva, ex: f <− f+0,1
+  if (distancia(macaco1.x, macaco1.y, macaco2.x, macaco2.y) < macaco1.ra) {
+    for (auto simbolo : macaco1.simbolos) {
+      if (macaco2.pesos.operator[simbolo] > 0) {
+        macaco2.pesos.operator[simbolo] += 0.1;
+      }
+    }
+  }
+}
+
+int main(){
+
+    MACACO macaco;
+  
+
+    for (int i = 0; i < coluna; i++) {
+      for (int j = 0; j < linha; j++) {
+      MATRIZ_AMBIENTE[i][j] = 0;
+     }
+    }
+
+  for (int i = 0; i < p; i++) {
+    gerarPredador();
+  }
+
+  for (int i = 0; i < m; i++) {
+    gerarMacaco();
+  }
+// imprimir a matriz com os valorer dos Macacos e Predadores 
+  for (int i = 0; i < coluna; i++) {
+    for (int j = 0; j < linha; j++) {
+      cout << MATRIZ_AMBIENTE[i][j] << " ";
+    }
+    cout << endl;
+  }
+
+ 
+  
+
+ gerarSimbolosMacaco(macaco);
+ return 0;
+
+}
+
+
