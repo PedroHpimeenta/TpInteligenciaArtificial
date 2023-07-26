@@ -24,24 +24,33 @@ int MATRIZ_AMBIENTE[coluna][linha];
 using namespace std;
 
 
-
+// Gera um mapa para representar as condições dos animais encontrados ou avistados 
 map<int, string> animal_condicao = {
     {1, "Cobra"},
     {2, "Tigre"},
     {3, "Aguia"}
 };
 
+
+
 // Lista de pares para armazenar o número gerado aleatoriamente e o animal associado
 vector<pair<int, string>> simbolos;
 
+
+
 //prototipo da função
 double gerar_pesos_f();
+
+
 
 // Função para gerar um número aleatório inteiro entre min e max
 int gerar_numero_aleatorio(int min, int max) {
     return rand() % (max - min + 1) + min;
 }
 
+
+
+//Estrutura para criação do Predador 
 struct PREDADOR {
     int x, y;
     vector<double> AGUIA;
@@ -49,11 +58,13 @@ struct PREDADOR {
     vector<double> COBRA;
 };
 
+//Estrutura para a criação do Macaco
 struct MACACO {
     int x, y;
 };
 
-// Função para gerar um macaco em uma posição aleatória diferente de outras posições ocupadas
+
+// Função para gerar um macaco em uma posição aleatória e diferente de outras posições ocupadas
 MACACO gerarMacacoAleatorio(int coluna, int linha, std::set<std::pair<int, int>>& posicoes_ocupadas) {
     MACACO macaco;
     do {
@@ -64,6 +75,8 @@ MACACO gerarMacacoAleatorio(int coluna, int linha, std::set<std::pair<int, int>>
     posicoes_ocupadas.insert({ macaco.x, macaco.y }); // Adiciona a posição ocupada ao conjunto
     return macaco;
 }
+
+
 
 // Função para mover um macaco para uma posição aleatória diferente de outras posições ocupadas
 string moverMacaco(MACACO& macaco, int coluna, int linha, set<pair<int, int>>& posicoes_ocupadas, set<pair<int, int>>& predadores_encontrados) {
@@ -131,6 +144,7 @@ string moverMacaco(MACACO& macaco, int coluna, int linha, set<pair<int, int>>& p
                     }
 
                 }
+
                 // organizar o If superior com o inferior 
                 else if (distancia_total == ra) {
                     // Verifica se o predador já foi encontrado antes
@@ -176,6 +190,8 @@ string moverMacaco(MACACO& macaco, int coluna, int linha, set<pair<int, int>>& p
     macaco.y = novaPosicaoY;
 }
 
+
+//Gerar um novo predador no ambiente 
 void gerarPredador() {
     PREDADOR predador;
     predador.x = rand() % coluna;
@@ -205,6 +221,8 @@ void gerarPredadores() {
 double gerar_pesos_f() {
     return static_cast<double>(rand()) / RAND_MAX;
 }
+
+
 
 int main() {
     // Semente do gerador de números aleatórios
